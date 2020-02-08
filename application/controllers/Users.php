@@ -40,23 +40,32 @@ class Users extends REST_Controller {
                 "password"      => sha1($this->post("password"))
             );
 
-            $query = $this->user->insert($data);
+            if($this->user->cek_email($this->post("email")) < 1){
+                $query = $this->user->insert($data);
 
-            if($query > 0){
-                $data = $this->user->read_id($id);
-                $message = array(
-                    "status"    => $query > 0,
-                    "message"   => "Berhasil melakukan registrasi!",
-                    "data"      => $data
-                );
-                $this->set_response($message, REST_Controller::HTTP_CREATED); // CREATED (201) being the HTTP response code
+                if($query > 0){
+                    $data = $this->user->read_id($id);
+                    $message = array(
+                        "status"    => $query > 0,
+                        "message"   => "Berhasil melakukan registrasi!",
+                        "data"      => $data
+                    );
+                    $this->set_response($message, REST_Controller::HTTP_CREATED); // CREATED (201) being the HTTP response code
+                }else{
+                    $message = array(
+                        "status"    => $query > 0,
+                        "message"   => "Gagal melakukan registrasi!",
+                        "data"      => array()
+                    );
+                    $this->response(NULL, REST_Controller::HTTP_OK); // BAD_REQUEST (400) being the HTTP response code
+                }
             }else{
                 $message = array(
-                    "status"    => $query > 0,
-                    "message"   => "Gagal melakukan registrasi!",
+                    "status"    => FALSE,
+                    "message"   => "Email sudah terdaftar!",
                     "data"      => array()
                 );
-                $this->response(NULL, REST_Controller::HTTP_BAD_REQUEST); // BAD_REQUEST (400) being the HTTP response code
+                $this->response(NULL, REST_Controller::HTTP_OK); // BAD_REQUEST (400) being the HTTP response code
             }
             
         }elseif ($this->uri->segment(2)==="login") {

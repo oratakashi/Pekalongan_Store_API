@@ -19,6 +19,11 @@
         {
             return $this->db->get_where('users', $data)->row_array();
         }
+
+        public function cek_email($email)
+        {
+            return $this->db->get_where('users', ["email"=>$email])->num_rows();
+        }
     }
     
     /* End of file UserModel.php */
