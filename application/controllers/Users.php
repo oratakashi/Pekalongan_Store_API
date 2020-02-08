@@ -65,7 +65,7 @@ class Users extends REST_Controller {
                     "message"   => "Email sudah terdaftar!",
                     "data"      => array()
                 );
-                $this->response(NULL, REST_Controller::HTTP_OK); // BAD_REQUEST (400) being the HTTP response code
+                $this->response($message, REST_Controller::HTTP_OK); // BAD_REQUEST (400) being the HTTP response code
             }
             
         }elseif ($this->uri->segment(2)==="login") {
