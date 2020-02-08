@@ -100,7 +100,7 @@ if ($_SERVER['HTTP_HOST'] == 'localhost'){
 		'hostname' => 'localhost',
 		'username' => 'u9017608_root',
 		'password' => 'dhinie12',
-		'database' => 'pekalonganstore',
+		'database' => 'u9017608_pekalonganstore',
 		'dbdriver' => 'mysqli',
 		'dbprefix' => '',
 		'pconnect' => FALSE,
