@@ -24,6 +24,13 @@
         {
             return $this->db->get_where('users', ["email"=>$email])->num_rows();
         }
+
+        public function update($id, $data)
+        {
+            $this->db->update('users', $data, ['id' => $id]);
+            
+            return $this->db->affected_rows();
+        }
     }
     
     /* End of file UserModel.php */
