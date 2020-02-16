@@ -13,17 +13,57 @@ class Users extends REST_Controller {
     {
         parent::__construct();
         $this->load->model('UserModel', 'user');
-        
+        $this->load->model('RegionModel', 'region');
     }
 
     public function index_get()
     {
-        $users = [
-            ['id' => 1, 'name' => 'John', 'email' => 'john@example.com', 'fact' => 'Loves coding'],
-            ['id' => 2, 'name' => 'Jim', 'email' => 'jim@example.com', 'fact' => 'Developed on CodeIgniter'],
-            ['id' => 3, 'name' => 'Jane', 'email' => 'jane@example.com', 'fact' => 'Lives in the USA', ['hobbies' => ['guitar', 'cycling']]],
-        ];
-        $this->response($users, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+        /**
+         * User Profile GET ("users/{{ user_id }})
+         * Flow : 
+         * Mendapatkan data user by ID
+         * Jika subdistrict_id tidak null mendapatkan data subdistrict
+         */
+        if(!empty($this->uri->segment(2))){
+            $id = $this->uri->segment(2);
+
+            $data_user = $this->user->read_id($id);
+
+            $data = array(
+                "id" => $data_user['id'],
+                "name" => $data_user['name'],
+                "email" => $data_user['email'],
+                "phone" => $data_user['phone'],
+                "photo" => base_url('media/users/').$data_user['photo'],
+                "address" => $data_user['address'],
+                "updated_at" => $data_user['updated_at'],
+                "subdistrict" => null
+            );
+
+            if(!empty($data_user['subdistrict_id'])){
+                $data_region = $this->region->read_id_subdistrict($data_user['subdistrict_id']);
+
+                $data['subdistrict'] = $data_region;
+            }
+
+            if(!empty($data_user)){
+                $message = array(
+                    "status"    => TRUE,
+                    "message"   => "Berhasil mendapatkan data!",
+                    "data"      => $data
+                );
+
+                $this->response($message, REST_Controller::HTTP_OK);
+            }else{
+                $message = array(
+                    "status"    => FALSE,
+                    "message"   => "User ID yang anda masukan salah!",
+                    "data"      => null
+                );
+
+                $this->response($message, REST_Controller::HTTP_OK);
+            }            
+        }
     }
     
 
@@ -57,7 +97,7 @@ class Users extends REST_Controller {
                         "message"   => "Gagal melakukan registrasi!",
                         "data"      => array()
                     );
-                    $this->response(NULL, REST_Controller::HTTP_OK); // BAD_REQUEST (400) being the HTTP response code
+                    $this->response($message, REST_Controller::HTTP_OK); // BAD_REQUEST (400) being the HTTP response code
                 }
             }else{
                 $message = array(

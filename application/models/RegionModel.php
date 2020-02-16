@@ -9,6 +9,11 @@
             $this->db->like('subdistrict_name', $keyword);
             return $this->db->get('subdistricts')->result_array();
         }
+
+        public function read_id_subdistrict($id)
+        {
+            return $this->db->get_where('subdistricts', ["subdistrict_id" => $id])->row_array();
+        }
     
     }
     
