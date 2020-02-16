@@ -66,7 +66,7 @@
 
                     $this->etalases->create($data_etalases);
 
-                    $this->users->update($data_store['user_id'], ['store_id' => $data_store['id']]);
+                    $this->users->update($data_store['user_id'], ['store_id' => $data_store['id'], 'updated_at' => date('Y-m-d H:i:s')]);
 
                     $message = array(
                         "status"    => TRUE,
