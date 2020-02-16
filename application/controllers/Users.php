@@ -131,6 +131,48 @@ class Users extends REST_Controller {
                 );
                 $this->set_response($message, REST_Controller::HTTP_OK); // HTTP NOT FOUND (404) being the HTTP response code
             }
+        }elseif($this->uri->segment(2)==="images"){
+            $id = $this->input->get('id');            
+
+            $photo = "";
+            if($_FILES['photo']['error'] === UPLOAD_ERR_OK){
+                $config['upload_path']          = './media/users/';
+                $config['allowed_types']        = 'jpg|png|jpeg';
+                $config['overwrite']            = true;
+                $config['file_name']            = $id;
+                
+                $this->load->library('upload', $config);
+                $this->upload->initialize($config);
+                if ( ! $this->upload->do_upload('photo')){
+                    $error = array('error' => $this->upload->display_errors());
+                    print_r($error);
+                }
+                else{
+                    $upload = array('upload_data' => $this->upload->data());
+                    $photo = $upload['upload_data']['file_name'];
+                }
+
+                $this->user->update($id, ["photo" => $photo]);
+
+                $message = array(
+                    "status"    => TRUE,
+                    "message"   => "Berhasil mengupload foto profile!",
+                    "data"      => [
+                        "filename"  => $photo,
+                        "url"       => base_url("media/users/").$photo
+                    ]
+                );
+
+                $this->response($message, REST_Controller::HTTP_OK);
+            }else{
+                $message = array(
+                    "status"    => FALSE,
+                    "message"   => "Anda tidak mengupload apapun!",
+                    "data"      => null
+                );
+
+                $this->response($message, REST_Controller::HTTP_OK);
+            }
         }
     }
 
