@@ -66,7 +66,6 @@ class Users extends REST_Controller {
         }
     }
     
-
     public function index_post()
     {
         if($this->uri->segment(2)==="register"){
@@ -176,6 +175,30 @@ class Users extends REST_Controller {
         }
     }
 
+    public function index_delete()
+    {
+        if($this->uri->segment(2)==="images"){
+            $id = $this->uri->segment(3);
+
+            $query = $this->user->delete_photo($id);
+
+            if($query > 0){
+                $message = array(
+                    "status"    => TRUE,
+                    "message"   => "Berhasil menghapus data!"
+                );
+
+                $this->response($message, REST_Controller::HTTP_OK);
+            }else{
+                $message = array(
+                    "status"    => FALSE,
+                    "message"   => "Gagal menghapus data!"
+                );
+
+                $this->response($message, REST_Controller::HTTP_OK);
+            }
+        }
+    }
 }
 
 /* End of file Users.php */

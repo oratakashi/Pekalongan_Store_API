@@ -31,6 +31,14 @@
             
             return $this->db->affected_rows();
         }
+
+        public function delete_photo($id)
+        {   
+            $this->db->set('photo', NULL);
+            $this->db->where('id', $id);
+            $this->db->update('users');
+            return $this->db->affected_rows();
+        }
     }
     
     /* End of file UserModel.php */
