@@ -185,14 +185,14 @@ class Users extends REST_Controller {
             if($query > 0){
                 $message = array(
                     "status"    => TRUE,
-                    "message"   => "Berhasil menghapus data!"
+                    "message"   => "Berhasil menghapus foto!"
                 );
 
                 $this->response($message, REST_Controller::HTTP_OK);
             }else{
                 $message = array(
                     "status"    => FALSE,
-                    "message"   => "Gagal menghapus data!"
+                    "message"   => "Gagal menghapus foto!, Mungkin foto sudah terhapus"
                 );
 
                 $this->response($message, REST_Controller::HTTP_OK);
