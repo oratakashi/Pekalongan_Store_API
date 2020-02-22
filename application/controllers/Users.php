@@ -156,18 +156,28 @@ class Users extends REST_Controller {
                     $photo = $upload['upload_data']['file_name'];
                 }
 
-                $this->user->update($id, ["photo" => $photo]);
+                $query = $this->user->update($id, ["photo" => $photo]);                
 
-                $message = array(
-                    "status"    => TRUE,
-                    "message"   => "Berhasil mengupload foto profile!",
-                    "data"      => [
-                        "filename"  => $photo,
-                        "url"       => base_url("media/users/").$photo
-                    ]
-                );
+                if($query > 0){
+                    $message = array(
+                        "status"    => TRUE,
+                        "message"   => "Berhasil mengupload foto profile!",
+                        "data"      => [
+                            "filename"  => $photo,
+                            "url"       => base_url("media/users/").$photo
+                        ]
+                    );
 
-                $this->response($message, REST_Controller::HTTP_OK);
+                    $this->response($message, REST_Controller::HTTP_OK);
+                }else{
+                    $message = array(
+                        "status"    => FALSE,
+                        "message"   => "Gagal mengupload foto!",
+                        "data"      => null
+                    );
+
+                    $this->response($message, REST_Controller::HTTP_OK);
+                }
             }else{
                 $message = array(
                     "status"    => FALSE,
