@@ -34,11 +34,16 @@ class Users extends REST_Controller {
                 "name" => $data_user['name'],
                 "email" => $data_user['email'],
                 "phone" => $data_user['phone'],
-                "photo" => base_url('media/users/').$data_user['photo'],
                 "address" => $data_user['address'],
                 "updated_at" => $data_user['updated_at'],
                 "subdistrict" => null
             );
+
+            if($data_user['photo'] != null){
+                $data['photo'] = base_url('media/users/').$data_user['photo'];
+            }else{
+                $data['photo'] = null;
+            }
 
             if(!empty($data_user['subdistrict_id'])){
                 $data_region = $this->region->read_id_subdistrict($data_user['subdistrict_id']);
