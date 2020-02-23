@@ -156,28 +156,18 @@ class Users extends REST_Controller {
                     $photo = $upload['upload_data']['file_name'];
                 }
 
-                $query = $this->user->update($id, ["photo" => $photo]);                
+                $query = $this->user->update($id, ["photo" => $photo]);   
 
-                if($query > 0){
-                    $message = array(
-                        "status"    => TRUE,
-                        "message"   => "Berhasil mengupload foto profile!",
-                        "data"      => [
-                            "filename"  => $photo,
-                            "url"       => base_url("media/users/").$photo
-                        ]
-                    );
+                $message = array(
+                    "status"    => TRUE,
+                    "message"   => "Berhasil mengupload foto profile!",
+                    "data"      => [
+                        "filename"  => $photo,
+                        "url"       => base_url("media/users/").$photo
+                    ]
+                );
 
-                    $this->response($message, REST_Controller::HTTP_OK);
-                }else{
-                    $message = array(
-                        "status"    => FALSE,
-                        "message"   => "Gagal mengupload foto!",
-                        "data"      => null
-                    );
-
-                    $this->response($message, REST_Controller::HTTP_OK);
-                }
+                $this->response($message, REST_Controller::HTTP_OK);
             }else{
                 $message = array(
                     "status"    => FALSE,
@@ -211,6 +201,65 @@ class Users extends REST_Controller {
                 );
 
                 $this->response($message, REST_Controller::HTTP_OK);
+            }
+        }
+    }
+
+    public function index_put()
+    {
+        if(!empty($this->uri->segment(2))){
+            $id = $this->uri->segment(2);
+
+            $data = array(
+                "name" => $this->put('name'),                
+                "email" => $this->put('email'),                
+                "phone" => $this->put('phone'),                
+                "address" => $this->put('address'),                
+                "subdistrict_id" => $this->put('subdistrict_id'),
+                "updated_at" => date("Y-m-d H:m:s")                
+            );
+
+            $query = $this->user->update($id, $data);
+
+            if($query > 0) {
+
+                $data_user = $this->user->read_id($id);
+
+                $data = array(
+                    "id" => $data_user['id'],
+                    "name" => $data_user['name'],
+                    "email" => $data_user['email'],
+                    "phone" => $data_user['phone'],
+                    "address" => $data_user['address'],
+                    "updated_at" => $data_user['updated_at'],
+                    "subdistrict" => null
+                );
+
+                if($data_user['photo'] != null){
+                    $data['photo'] = base_url('media/users/').$data_user['photo'];
+                }else{
+                    $data['photo'] = null;
+                }
+
+                if(!empty($data_user['subdistrict_id'])){
+                    $data_region = $this->region->read_id_subdistrict($data_user['subdistrict_id']);
+
+                    $data['subdistrict'] = $data_region;
+                }
+
+                $message = array(
+                    "status"    => $query > 0,
+                    "message"   => "Berhasil melakukan perubahan!",
+                    "data"      => $data
+                );
+                $this->set_response($message, REST_Controller::HTTP_OK); // CREATED (201) being the HTTP response code
+            }else{
+                $message = array(
+                    "status"    => $query > 0,
+                    "message"   => "Gagal melakukan perubahan!",
+                    "data"      => null
+                );
+                $this->set_response($message, REST_Controller::HTTP_OK); // CREATED (201) being the HTTP response code
             }
         }
     }

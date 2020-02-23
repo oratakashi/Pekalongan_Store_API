@@ -72,7 +72,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $active_group = 'default';
 $query_builder = TRUE;
-if ($_SERVER['HTTP_HOST'] == 'localhost'){
+if ($_SERVER['HTTP_HOST'] == 'localhost' || $_SERVER['HTTP_HOST'] == '192.168.42.27'){
 	$db['default'] = array(
 		'dsn'	=> '',
 		'hostname' => 'localhost',
