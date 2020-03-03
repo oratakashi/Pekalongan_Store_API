@@ -36,7 +36,7 @@ class Users extends REST_Controller {
                 "phone" => $data_user['phone'],
                 "address" => $data_user['address'],
                 "updated_at" => $data_user['updated_at'],
-                "subdistrict" => null
+                "villages" => null
             );
 
             if($data_user['photo'] != null){
@@ -45,10 +45,10 @@ class Users extends REST_Controller {
                 $data['photo'] = null;
             }
 
-            if(!empty($data_user['subdistrict_id'])){
-                $data_region = $this->region->read_id_subdistrict($data_user['subdistrict_id']);
+            if(!empty($data_user['village_id'])){
+                $data_region = $this->region->read_id_village($data_user['village_id']);
 
-                $data['subdistrict'] = $data_region;
+                $data['villages'] = $data_region;
             }
 
             if(!empty($data_user)){

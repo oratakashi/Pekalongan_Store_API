@@ -20,17 +20,30 @@
                 if(!empty($this->get("keyword"))){
                     $this->search_get();
                 }
+            }elseif($this->uri->segment(2)=="villages"){
+                if(!empty($this->get("keyword"))){
+                    $this->search_get();
+                }
             }
         }
 
         public function search_get()
         {
-            $message = array(
-                "status"    => TRUE,
-                "message"   => "Berhasil mendapatkan data!",
-                "data"      => $this->regions->search($this->get("keyword"))
-            );
-            $this->response($message, REST_Controller::HTTP_OK); // HTTP_OK (200) being the HTTP response code
+            if($this->uri->segment(2)=="subdistrict"){
+                $message = array(
+                    "status"    => TRUE,
+                    "message"   => "Berhasil mendapatkan data!",
+                    "data"      => $this->regions->search_subdistrict($this->get("keyword"))
+                );
+                $this->response($message, REST_Controller::HTTP_OK); // HTTP_OK (200) being the HTTP response code
+            }else if($this->uri->segment(2)=="villages"){
+                $message = array(
+                    "status"    => TRUE,
+                    "message"   => "Berhasil mendapatkan data!",
+                    "data"      => $this->regions->search_village($this->get("keyword"))
+                );
+                $this->response($message, REST_Controller::HTTP_OK); // HTTP_OK (200) being the HTTP response code
+            }
         }
     }
     
