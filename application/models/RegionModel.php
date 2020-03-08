@@ -23,7 +23,7 @@
 
         public function read_id_village($id)
         {
-            return $this->db->get_where('view_region', ["village_od" => $id])->row_array();
+            return $this->db->get_where('view_region', ["village_id" => $id])->row_array();
         }
     
     }
