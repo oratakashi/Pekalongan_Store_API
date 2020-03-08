@@ -22,7 +22,7 @@ class Users extends REST_Controller {
          * User Profile GET ("users/{{ user_id }})
          * Flow : 
          * Mendapatkan data user by ID
-         * Jika subdistrict_id tidak null mendapatkan data subdistrict
+         * Jika village_id tidak null mendapatkan data region
          */
         if(!empty($this->uri->segment(2))){
             $id = $this->uri->segment(2);
@@ -215,7 +215,7 @@ class Users extends REST_Controller {
                 "email" => $this->put('email'),                
                 "phone" => $this->put('phone'),                
                 "address" => $this->put('address'),                
-                "subdistrict_id" => $this->put('subdistrict_id'),
+                "village_id" => $this->put('village_id'),
                 "updated_at" => date("Y-m-d H:m:s")                
             );
 
@@ -232,7 +232,7 @@ class Users extends REST_Controller {
                     "phone" => $data_user['phone'],
                     "address" => $data_user['address'],
                     "updated_at" => $data_user['updated_at'],
-                    "subdistrict" => null
+                    "village_id" => null
                 );
 
                 if($data_user['photo'] != null){
@@ -241,10 +241,10 @@ class Users extends REST_Controller {
                     $data['photo'] = null;
                 }
 
-                if(!empty($data_user['subdistrict_id'])){
-                    $data_region = $this->region->read_id_subdistrict($data_user['subdistrict_id']);
+                if(!empty($data_user['village_id'])){
+                    $data_region = $this->region->read_id_village($data_user['village_id']);
 
-                    $data['subdistrict'] = $data_region;
+                    $data['village_id'] = $data_region;
                 }
 
                 $message = array(
