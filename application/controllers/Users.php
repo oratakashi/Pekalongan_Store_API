@@ -131,7 +131,7 @@ class Users extends REST_Controller {
                 $message = array(
                     "status"    => FALSE,
                     "message"   => "Username atau password salah!",
-                    "data"      => array()
+                    "data"      => null
                 );
                 $this->set_response($message, REST_Controller::HTTP_OK); // HTTP NOT FOUND (404) being the HTTP response code
             }

@@ -28,7 +28,7 @@ class Addresses extends REST_Controller {
         }else{
             $id = $this->uri->segment(2);
             
-            $data_address = $this->address->read_by_user($id);
+            $data_address = $this->address->read_by_user($id);            
 
             if(count($data_address) < 1){
                 $message = array(
@@ -171,7 +171,7 @@ class Addresses extends REST_Controller {
     }
 
     /**
-     * Jika User menghapus alamat aktif, maka 
+     * Jika User menghapus alamat aktif, maka alamat bawahnya otomatis menjadi aktif
      */
 
     public function index_delete()
@@ -205,6 +205,9 @@ class Addresses extends REST_Controller {
                             $this->response($message, REST_Controller::HTTP_OK);
                         }
                     }else{
+                        /**
+                         * Mendapatkan data pada index ke 1, karena urutanya alamat utama selalu index ke 0
+                         */
                         $data_address = $data_address[1];
 
                         $query = $this->address->delete($id);
@@ -232,7 +235,7 @@ class Addresses extends REST_Controller {
                     $query = $this->address->delete($id);
                     if($query > 0){
                         $message = array(
-                                "status"    => FALSE,
+                                "status"    => TRUE,
                                 "message"   => "Alamat berhasil di hapus!"
                             );
 

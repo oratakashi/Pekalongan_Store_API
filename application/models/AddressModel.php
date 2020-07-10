@@ -12,11 +12,12 @@
 
         public function read_by_user($user_id)
         {         
+            $this->db->order_by('default', 'asc');   
             return $this->db->get_where('addresses', ["user_id" => $user_id])->result_array();            
         }    
 
         public function read_id($id)
-        {
+        {         
             return $this->db->get_where('addresses', ["id" => $id])->row_array();
         }
 
